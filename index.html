@@ -133,23 +133,44 @@
     </div>
 
     <!-- Encabezado -->
-    <header class="bg-gray-900 text-white py-4 shadow-lg sticky-header"> <!-- Agregada clase sticky-header -->
-        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
+    <header class="bg-gray-900 text-white py-4 shadow-lg sticky-header">
+        <div class="container mx-auto flex items-center justify-between px-4">
+            <!-- Logotipo y Título -->
             <div class="flex items-center space-x-4">
-                <!-- Logotipo de Krypton Plus -->
-                <img src="https://placehold.co/80x80/0d0d0d/e0ffe0?text=Krypton" alt="Logotipo de Krypton Plus" class="h-20 w-20 rounded-full border-2 border-green-500 p-1">
+                <img src="logos/krypton.png" alt="Logotipo de Krypton Plus" class="h-20 w-20 rounded-full border-2 border-green-500 p-1">
                 <h1 class="text-4xl font-bold gradient-text">Krypton Plus</h1>
             </div>
-            <!-- Navegación -->
-            <nav class="mt-4 md:mt-0">
+
+            <!-- Botón de Menú para Móviles (Hamburguesa) -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- Navegación Principal (Visible en Desktop, oculta en Mobile) -->
+            <nav id="main-nav" class="hidden md:flex md:flex-row md:space-x-8 text-lg">
                 <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg">
                     <li><a href="#streaming" class="hover:text-green-400 transition duration-300">Streaming</a></li>
                     <li><a href="#acceso" class="hover:text-green-400 transition duration-300">Tipos de Acceso</a></li>
                     <li><a href="#app-details" class="hover:text-green-400 transition duration-300">Detalles de Apps</a></li>
+                    <li><a href="#rules" class="hover:text-green-400 transition duration-300">Reglas de Uso</a></li>
                     <li><a href="#archivos" class="hover:text-green-400 transition duration-300">Archivos</a></li>
                     <li><a href="#contacto" class="hover:text-green-400 transition duration-300">Contacto</a></li>
                 </ul>
             </nav>
+        </div>
+
+        <!-- Menú de Navegación Móvil (Se muestra al hacer clic en la hamburguesa) -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-800 py-2">
+            <ul class="flex flex-col space-y-2 text-lg px-4">
+                <li><a href="#streaming" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Streaming</a></li>
+                <li><a href="#acceso" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Tipos de Acceso</a></li>
+                <li><a href="#app-details" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Detalles de Apps</a></li>
+                <li><a href="#rules" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Reglas de Uso</a></li>
+                <li><a href="#archivos" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Archivos</a></li>
+                <li><a href="#contacto" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Contacto</a></li>
+            </ul>
         </div>
     </header>
 
@@ -193,7 +214,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 <!-- Tarjeta de Netflix -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/E50914?text=Netflix" alt="Netflix Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/netflix.png" alt="Netflix Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Netflix</h4>
                     <p class="text-gray-400 mb-4">Miles de películas y series para todos los gustos.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="netflix-options">
@@ -201,19 +222,39 @@
                     </div>
                     <a href="#netflix-details" class="text-button">Más Información</a>
                 </div>
-                <!-- Tarjeta de Disney+ -->
+                <!-- Tarjeta de Netflix Privado -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/0072D2?text=Disney+" alt="Disney+ Logo" class="mx-auto mb-4 rounded-full">
-                    <h4 class="text-2xl font-semibold text-white mb-2">Disney+</h4>
-                    <p class="text-gray-400 mb-4">El hogar de Disney, Pixar, Marvel, Star Wars y National Geographic.</p>
-                    <div class="flex flex-col space-y-2 mt-4" id="disney-plus-options">
+                    <img src="logos/netflix.png" alt="Netflix Privado Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Netflix Privado</h4>
+                    <p class="text-gray-400 mb-4">Tu perfil exclusivo en una cuenta premium de Netflix.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="netflix-privado-options">
                         <!-- Los precios y botones se insertarán aquí dinámicamente -->
                     </div>
-                    <a href="#disney-plus-details" class="text-button">Más Información</a>
+                    <a href="#netflix-privado-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Disney+ Premium con ESPN -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/disney-plus.png" alt="Disney+ Premium Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Disney+ Premium con ESPN</h4>
+                    <p class="text-gray-400 mb-4">El hogar de Disney, Pixar, Marvel, Star Wars, Nat Geo y ESPN.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="disney-plus-premium-con-espn-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#disney-plus-premium-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Disney+ Estándar con ESPN -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/disney-plus.png" alt="Disney+ Estándar Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Disney+ Estándar con ESPN</h4>
+                    <p class="text-gray-400 mb-4">Acceso a contenido de Disney, Pixar, Marvel, Star Wars, Nat Geo y ESPN.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="disney-plus-estandar-con-espn-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#disney-plus-estandar-details" class="text-button">Más Información</a>
                 </div>
                 <!-- Tarjeta de Max Platino -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/8000FF?text=Max" alt="Max Platino Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/max.png" alt="Max Platino Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Max Platino</h4>
                     <p class="text-gray-400 mb-4">La experiencia premium de Max con la mejor calidad.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="max-platino-options">
@@ -223,7 +264,7 @@
                 </div>
                 <!-- Tarjeta de Max Estándar -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/8000FF?text=Max" alt="Max Estándar Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/max.png" alt="Max Estándar Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Max Estándar</h4>
                     <p class="text-gray-400 mb-4">Acceso completo a Max en calidad estándar.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="max-estandar-options">
@@ -233,7 +274,7 @@
                 </div>
                 <!-- Tarjeta de Amazon Prime Video -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/00A8E1?text=Prime" alt="Amazon Prime Video Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/amazon-prime-video.png" alt="Amazon Prime Video Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Amazon Prime Video</h4>
                     <p class="text-gray-400 mb-4">Contenido exclusivo y beneficios Prime.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="amazon-prime-video-options">
@@ -243,7 +284,7 @@
                 </div>
                 <!-- Tarjeta de Paramount+ -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/0066FF?text=Paramount+" alt="Paramount+ Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/paramount-plus.png" alt="Paramount+ Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Paramount+</h4>
                     <p class="text-gray-400 mb-4">Series originales, películas y deportes en vivo.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="paramount-plus-options">
@@ -253,7 +294,7 @@
                 </div>
                 <!-- Tarjeta de YouTube Premium -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/FF0000?text=YouTube" alt="YouTube Premium Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/youtube-premium.png" alt="YouTube Premium Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">YouTube Premium</h4>
                     <p class="text-gray-400 mb-4">Videos sin anuncios, descargas y reproducción en segundo plano.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="youtube-premium-options">
@@ -263,7 +304,7 @@
                 </div>
                 <!-- Tarjeta de Spotify Premium -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/1DB954?text=Spotify" alt="Spotify Premium Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/spotify.png" alt="Spotify Premium Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Spotify Premium</h4>
                     <p class="text-gray-400 mb-4">Música sin límites, sin anuncios y descargas.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="spotify-premium-options">
@@ -273,7 +314,7 @@
                 </div>
                 <!-- Tarjeta de Deezer Premium -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/00C7E5?text=Deezer" alt="Deezer Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/deezer.png" alt="Deezer Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Deezer Premium</h4>
                     <p class="text-gray-400 mb-4">Millones de canciones, podcasts y radios sin anuncios.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="deezer-premium-options">
@@ -283,7 +324,7 @@
                 </div>
                 <!-- Tarjeta de Crunchyroll -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/F47521?text=Crunchyroll" alt="Crunchyroll Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/crunchyroll.png" alt="Crunchyroll Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Crunchyroll</h4>
                     <p class="text-gray-400 mb-4">El mejor anime en streaming, con subtítulos y doblaje.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="crunchyroll-options">
@@ -293,7 +334,7 @@
                 </div>
                 <!-- Tarjeta de Flujo TV -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/00BCD4?text=Flujo+TV" alt="Flujo TV Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/flujo-tv.png" alt="Flujo TV Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Flujo TV</h4>
                     <p class="text-gray-400 mb-4">Televisión en vivo y contenido a la carta.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="flujo-tv-options">
@@ -303,7 +344,7 @@
                 </div>
                 <!-- Tarjeta de Canva Pro -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/00C4CC?text=Canva+Pro" alt="Canva Pro Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/canva-pro.png" alt="Canva Pro Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Canva Pro</h4>
                     <p class="text-gray-400 mb-4">Herramientas de diseño gráfico premium para todos tus proyectos.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="canva-pro-options">
@@ -313,7 +354,7 @@
                 </div>
                 <!-- Tarjeta de Vix -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/FF6600?text=Vix" alt="Vix Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/vix.png" alt="Vix Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Vix</h4>
                     <p class="text-gray-400 mb-4">Contenido en español, incluyendo series, películas y deportes.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="vix-options">
@@ -323,13 +364,33 @@
                 </div>
                 <!-- Tarjeta de Game Pass Ultimate -->
                 <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/100x100/000000/107C10?text=Game+Pass" alt="Game Pass Ultimate Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="logos/game-pass.png" alt="Game Pass Ultimate Logo" class="mx-auto mb-4 rounded-full">
                     <h4 class="text-2xl font-semibold text-white mb-2">Game Pass Ultimate</h4>
                     <p class="text-gray-400 mb-4">Acceso a cientos de juegos de alta calidad.</p>
                     <div class="flex flex-col space-y-2 mt-4" id="game-pass-ultimate-options">
                         <!-- Los precios y botones se insertarán aquí dinámicamente -->
                     </div>
                     <a href="#game-pass-ultimate-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Super Duolingo -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/duolingo.png" alt="Super Duolingo Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Super Duolingo</h4>
+                    <p class="text-gray-400 mb-4">La mejor forma de aprender idiomas sin límites.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="super-duolingo-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#super-duolingo-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de MGTV -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/mgtv.png" alt="MGTV Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">MGTV</h4>
+                    <p class="text-gray-400 mb-4">Contenido variado para tus dispositivos Android.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="mgtv-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#mgtv-details" class="text-button">Más Información</a>
                 </div>
             </div>
         </div>
@@ -390,20 +451,49 @@
                     <li>Descargas en hasta 6 dispositivos.</li>
                     <li>Amplio catálogo de películas, series y documentales originales de Netflix.</li>
                     <li>Perfiles personalizados con recomendaciones individuales.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Netflix Privado -->
+            <div id="netflix-privado-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Netflix Privado</h4>
+                <p class="text-gray-400 mb-4">
+                    Obtén un perfil exclusivo dentro de una cuenta premium de Netflix. Ideal para quienes buscan privacidad y control sobre su experiencia de visualización sin compartir credenciales de cuenta completa. Olvídate del error fuera del hogar.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Perfil individual y privado.</li>
+                    <li>Historial de visualización y recomendaciones personalizadas.</li>
+                    <li>Acceso al contenido premium de Netflix.</li>
+                    <li>No requiere compartir la contraseña de la cuenta principal.</li>
                     <li>Planes de perfil disponibles: 1, 2 y 3 meses.</li>
                 </ul>
             </div>
 
-            <!-- Detalles de Disney+ -->
-            <div id="disney-plus-details" class="card-bg rounded-xl p-8 mb-8">
-                <h4 class="text-3xl font-semibold text-white mb-4">Disney+ Premium</h4>
+            <!-- Detalles de Disney+ Premium con ESPN -->
+            <div id="disney-plus-premium-con-espn-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Disney+ Premium con ESPN</h4>
                 <p class="text-gray-400 mb-4">
-                    Disney+ te ofrece un mundo mágico de entretenimiento con acceso a:
+                    La experiencia completa de Disney+ con la adición de ESPN para deportes en vivo y contenido exclusivo.
                 </p>
                 <ul class="list-disc list-inside text-gray-300 space-y-2">
-                    <li>Contenido de Disney, Pixar, Marvel, Star Wars, National Geographic y Star (incluido).</li>
-                    <li>Streaming en 4K UHD y HDR.</li>
+                    <li>Contenido de Disney, Pixar, Marvel, Star Wars, National Geographic y ESPN.</li>
+                    <li>Streaming en 4K UHD y HDR (donde esté disponible).</li>
                     <li>Hasta 4 pantallas simultáneas.</li>
+                    <li>Descargas en hasta 10 dispositivos.</li>
+                    <li>Perfiles personalizables con control parental.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Disney+ Estándar con ESPN -->
+            <div id="disney-plus-estandar-con-espn-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Disney+ Estándar con ESPN</h4>
+                <p class="text-gray-400 mb-4">
+                    Acceso al vasto catálogo de Disney+ y ESPN en calidad estándar.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Contenido de Disney, Pixar, Marvel, Star Wars, National Geographic y ESPN.</li>
+                    <li>Streaming en Full HD (1080p).</li>
+                    <li>Hasta 2 pantallas simultáneas.</li>
                     <li>Descargas en hasta 10 dispositivos.</li>
                     <li>Perfiles personalizables con control parental.</li>
                 </ul>
@@ -483,6 +573,7 @@
                     <li>Acceso a YouTube Music Premium.</li>
                     <li>Acceso a YouTube Originals.</li>
                     <li>Planes disponibles: 1, 2, 3 y 6 meses.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
                 </ul>
             </div>
 
@@ -499,6 +590,7 @@
                     <li>Calidad de audio mejorada.</li>
                     <li>Acceso a millones de canciones y podcasts.</li>
                     <li>Planes disponibles: 1, 2, 3 y 6 meses.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
                 </ul>
             </div>
 
@@ -563,6 +655,7 @@
                     <li>Guardar diseños con fondo transparente.</li>
                     <li>Almacenamiento en la nube ilimitado.</li>
                     <li>Planes disponibles: 1, 2, 3, 6 y 12 meses.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
                 </ul>
             </div>
 
@@ -597,6 +690,60 @@
                 </ul>
             </div>
 
+            <!-- Detalles de Super Duolingo -->
+            <div id="super-duolingo-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Super Duolingo</h4>
+                <p class="text-gray-400 mb-4">
+                    Super Duolingo eleva tu aprendizaje de idiomas con estas ventajas:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Aprendizaje sin anuncios.</li>
+                    <li>Vidas ilimitadas para practicar sin interrupciones.</li>
+                    <li>Práctica de errores personalizada.</li>
+                    <li>Pruebas de progreso ilimitadas.</li>
+                    <li>Acceso a lecciones y contenido exclusivo.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de MGTV -->
+            <div id="mgtv-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">MGTV</h4>
+                <p class="text-gray-400 mb-4">
+                    MGTV te ofrece una amplia gama de contenido de entretenimiento con acceso en varios dispositivos.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Contenido variado de películas, series y programas.</li>
+                    <li>TV en vivo.</li>
+                    <li>Pantallas simultáneas: 3 o 5 dispositivos.</li>
+                    <li>Compatible con: celulares y tablets Android, Roku TV y Fire TV.</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Sección de Reglas de Uso de Cuentas y Perfiles -->
+    <section id="rules" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-4xl font-bold gradient-text mb-12">Reglas de Uso de Cuentas y Perfiles</h3>
+            <div class="card-bg rounded-xl p-8 max-w-3xl mx-auto text-left">
+                <p class="text-gray-300 mb-4">
+                    Para garantizar una experiencia óptima y justa para todos nuestros usuarios, es fundamental seguir las siguientes reglas:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li><strong>No borrar perfiles:</strong> Bajo ninguna circunstancia se deben borrar perfiles existentes en las cuentas compartidas. Esto afecta a otros usuarios.</li>
+                    <li><strong>No cambiar contraseñas:</strong> Las contraseñas de las cuentas son gestionadas por AD STREAMING. Cualquier intento de cambio resultará en la suspensión inmediata del servicio.</li>
+                    <li><strong>Respetar el límite de dispositivos:</strong> Utiliza la cuenta solo en el número de dispositivos permitidos para tu tipo de acceso (perfil o cuenta completa). El uso excesivo puede bloquear la cuenta para todos.</li>
+                    <li><strong>No compartir credenciales:</strong> Las credenciales de la cuenta son para tu uso personal o el de tu grupo familiar/amigos, según el tipo de cuenta. No las compartas fuera de este ámbito.</li>
+                    <li><strong>Reportar problemas:</strong> Si encuentras algún problema con la cuenta o el perfil, contáctanos inmediatamente a través de WhatsApp. No intentes solucionarlo por tu cuenta.</li>
+                    <li><strong>Tiempo de resolución de reportes:</strong> Los reportes serán atendidos y resueltos en un lapso de 12 a 48 horas. Agradecemos tu paciencia.</li>
+                    <li><strong>Uso responsable:</strong> Utiliza las cuentas de streaming de manera responsable y ética, respetando los términos de servicio de cada plataforma.</li>
+                </ul>
+                <p class="text-gray-300 mt-4">
+                    El incumplimiento de estas reglas puede llevar a la suspensión o cancelación de tu servicio sin reembolso.
+                </p>
+            </div>
         </div>
     </section>
 
@@ -604,23 +751,34 @@
     <section id="archivos" class="py-16 bg-gray-900">
         <div class="container mx-auto px-4 text-center">
             <h3 class="text-4xl font-bold gradient-text mb-12">Archivos Exclusivos</h3>
-            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Accede a una biblioteca de archivos cuidadosamente seleccionados, desde guías y tutoriales hasta contenido digital exclusivo.
-            </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Tarjeta de Archivo 1 -->
+                <!-- Tarjeta de Activación Flujo TV -->
                 <div class="card-bg rounded-xl p-6 flex flex-col items-center">
-                    <div class="text-5xl text-green-400 mb-4">📁</div>
-                    <h4 class="text-2xl font-semibold text-white mb-2">Guía de Optimización de Streaming</h4>
-                    <p class="text-gray-400 mb-4">Aprende a configurar tu conexión para la mejor experiencia de streaming.</p>
-                    <button class="btn-primary px-6 py-2 rounded-full font-medium">Descargar</button>
+                    <div class="text-5xl text-green-400 mb-4">📺</div>
+                    <h4 class="text-2xl font-semibold text-white mb-2">Activación Flujo TV</h4>
+                    <p class="text-gray-400 mb-4">Toda la información para activar tu servicio de Flujo TV.</p>
+                    <a href="https://vanaminhe.com/activacion-fltv/" target="_blank" class="btn-primary px-6 py-2 rounded-full font-medium mt-4">Ver Información</a>
                 </div>
-                <!-- Tarjeta de Archivo 2 -->
+                <!-- Tarjeta de Instrucciones MGTV -->
                 <div class="card-bg rounded-xl p-6 flex flex-col items-center">
-                    <div class="text-5xl text-green-400 mb-4">💾</div>
-                    <h4 class="text-2xl font-semibold text-white mb-2">Paquete de Fondos de Pantalla Futuristas</h4>
-                    <p class="text-gray-400 mb-4">Personaliza tus dispositivos con nuestra colección exclusiva.</p>
-                    <button class="btn-primary px-6 py-2 rounded-full font-medium">Descargar</button>
+                    <div class="text-5xl text-green-400 mb-4">📱</div>
+                    <h4 class="text-2xl font-semibold text-white mb-2">Instalación MGTV</h4>
+                    <p class="text-gray-400 mb-4">Guía para instalar MGTV en tus dispositivos.</p>
+                    <div class="text-left w-full mt-4">
+                        <h5 class="text-xl font-semibold text-white mb-2">Descargas MGTV</h5>
+                        <p class="text-gray-300 mb-2">
+                            APK para dispositivos Android (celulares y tablets):
+                            <a href="https://www.mediafire.com/file/5xw876jjt0g86v1/mgtvstreaming+(KRYPTON+PLUS).apk/file" target="_blank" class="text-green-400 hover:underline">Descargar APK</a>
+                        </p>
+                        <p class="text-gray-300 mb-2">
+                            Para Fire TV (con la app Downloader):
+                            Código Downloader: <span class="font-bold text-green-400">4747041</span>
+                        </p>
+                        <p class="text-gray-300">
+                            Para Roku TV:
+                            Ve a la tienda de aplicaciones, busca "MGTV", instala, inicia sesión y disfruta.
+                        </p>
+                    </div>
                 </div>
             </div>
             <p class="text-lg text-gray-500 mt-8">
@@ -656,23 +814,37 @@
             'Netflix': {
                 'publico': {
                     'Cuenta Completa': '$240 MXN/mes',
-                    'Perfil': '$90 MXN/mes',
-                    'Perfil 2M': '$170 MXN',
-                    'Perfil 3M': '$210 MXN'
+                    'Perfil': '$90 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$90 MXN/mes',
+                    'Perfil': '$60 MXN/mes',
                     'Cuenta Completa': '$250 MXN/mes'
                 }
             },
-            'Disney+': {
+            'Netflix Privado': {
+                'publico': {
+                    'Perfil': '$120 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$80 MXN/mes'
+                }
+            },
+            'Disney+ Premium con ESPN': {
                 'publico': {
                     'Cuenta Completa': '$160 MXN/mes',
                     'Perfil': '$50 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$75 MXN/mes',
-                    'Cuenta Completa': '$220 MXN/mes'
+                    'Cuenta Completa': '$110 MXN/mes',
+                    'Perfil': '$20 MXN/mes'
+                }
+            },
+            'Disney+ Estándar con ESPN': {
+                'publico': {
+                    'Cuenta Completa': '$70 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$50 MXN/mes'
                 }
             },
             'Max Platino': {
@@ -681,8 +853,8 @@
                     'Perfil': '$50 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$120 MXN/mes',
-                    'Cuenta Completa': '$350 MXN/mes'
+                    'Perfil': '$25 MXN/mes',
+                    'Cuenta Completa': '$85 MXN/mes'
                 }
             },
             'Max Estándar': {
@@ -691,8 +863,8 @@
                     'Perfil': '$35 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$80 MXN/mes',
-                    'Cuenta Completa': '$230 MXN/mes'
+                    'Perfil': '$15 MXN/mes',
+                    'Cuenta Completa': '$35 MXN/mes'
                 }
             },
             'Amazon Prime Video': {
@@ -711,8 +883,8 @@
                     'Perfil': '$35 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$60 MXN/mes',
-                    'Cuenta Completa': '$160 MXN/mes'
+                    'Perfil': '$15 MXN/mes',
+                    'Cuenta Completa': '$35 MXN/mes'
                 }
             },
             'YouTube Premium': {
@@ -728,7 +900,7 @@
                     'Cuenta Completa': '$70 MXN/mes'
                 },
                 'revendedor': {
-                    'Cuenta Completa': '$110 MXN/mes'
+                    'Cuenta Completa': '$40 MXN/mes'
                 }
             },
             'Deezer Premium': {
@@ -736,7 +908,7 @@
                     'Cuenta Completa': '$50 MXN/mes'
                 },
                 'revendedor': {
-                    'Cuenta Completa': '$100 MXN/mes'
+                    'Cuenta Completa': '$15 MXN/mes'
                 }
             },
             'Crunchyroll': {
@@ -745,8 +917,8 @@
                     'Perfil': '$30 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$50 MXN/mes',
-                    'Cuenta Completa': '$140 MXN/mes'
+                    'Perfil': '$10 MXN/mes',
+                    'Cuenta Completa': '$35 MXN/mes'
                 }
             },
             'Flujo TV': {
@@ -754,7 +926,7 @@
                     'Cuenta Completa': '$90 MXN/mes'
                 },
                 'revendedor': {
-                    'Cuenta Completa': '$160 MXN/mes'
+                    'Cuenta Completa': '$65 MXN/mes'
                 }
             },
             'Canva Pro': {
@@ -762,7 +934,7 @@
                     'Cuenta Completa': '$50 MXN/mes'
                 },
                 'revendedor': {
-                    'Cuenta Completa': '$120 MXN/mes'
+                    'Cuenta Completa': '$30 MXN/mes'
                 }
             },
             'Vix': {
@@ -771,8 +943,8 @@
                     'Perfil': '$20 MXN/mes'
                 },
                 'revendedor': {
-                    'Perfil': '$50 MXN/mes',
-                    'Cuenta Completa': '$140 MXN/mes'
+                    'Perfil': '$5 MXN/mes',
+                    'Cuenta Completa': '$15 MXN/mes'
                 }
             },
             'Game Pass Ultimate': {
@@ -781,6 +953,24 @@
                 },
                 'revendedor': {
                     'Cuenta Completa': '$200 MXN/mes'
+                }
+            },
+            'Super Duolingo': {
+                'publico': {
+                    'Cuenta Completa': '$50 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$25 MXN/mes'
+                }
+            },
+            'MGTV': {
+                'publico': {
+                    'Cuenta Completa 3 Dispositivos': '$90 MXN/mes',
+                    'Cuenta Completa 5 Dispositivos': '$120 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa 3 Dispositivos': '$75 MXN/mes',
+                    'Cuenta Completa 5 Dispositivos': '$90 MXN/mes'
                 }
             }
         };
@@ -843,6 +1033,29 @@
             }
         }
 
+        // Función para obtener el nombre de la aplicación limpio para usar como clave
+        function getCleanAppName(rawAppName) {
+            if (rawAppName.includes('Netflix Privado')) return 'Netflix Privado';
+            if (rawAppName.includes('Netflix')) return 'Netflix';
+            if (rawAppName.includes('Disney+ Premium con ESPN')) return 'Disney+ Premium con ESPN';
+            if (rawAppName.includes('Disney+ Estándar con ESPN')) return 'Disney+ Estándar con ESPN';
+            if (rawAppName.includes('Max Platino')) return 'Max Platino';
+            if (rawAppName.includes('Max Estándar')) return 'Max Estándar';
+            if (rawAppName.includes('Amazon Prime Video')) return 'Amazon Prime Video';
+            if (rawAppName.includes('Paramount+')) return 'Paramount+';
+            if (rawAppName.includes('YouTube Premium')) return 'YouTube Premium';
+            if (rawAppName.includes('Spotify Premium')) return 'Spotify Premium';
+            if (rawAppName.includes('Deezer Premium')) return 'Deezer Premium';
+            if (rawAppName.includes('Crunchyroll')) return 'Crunchyroll';
+            if (rawAppName.includes('Flujo TV')) return 'Flujo TV';
+            if (rawAppName.includes('Canva Pro')) return 'Canva Pro';
+            if (rawAppName.includes('Vix')) return 'Vix';
+            if (rawAppName.includes('Game Pass Ultimate')) return 'Game Pass Ultimate';
+            if (rawAppName.includes('Super Duolingo')) return 'Super Duolingo';
+            if (rawAppName.includes('MGTV')) return 'MGTV';
+            return rawAppName; // Fallback
+        }
+
         // Función para actualizar los precios mostrados en las tarjetas
         function updatePrices() {
             const userType = document.querySelector('input[name="userType"]:checked').value;
@@ -854,25 +1067,7 @@
                 const appNameElement = card.querySelector('h4');
                 if (!appNameElement) return; // Si no hay h4, saltar esta tarjeta
 
-                // Extraer el nombre de la aplicación del texto del h4 (ej. "Netflix", "Max Platino")
-                let appName = appNameElement.textContent.trim();
-                // Ajustar appName para que coincida con las claves en appPrices
-                if (appName.includes('Netflix')) appName = 'Netflix';
-                else if (appName.includes('Disney+')) appName = 'Disney+';
-                else if (appName.includes('Max Platino')) appName = 'Max Platino';
-                else if (appName.includes('Max Estándar')) appName = 'Max Estándar';
-                else if (appName.includes('Amazon Prime Video')) appName = 'Amazon Prime Video';
-                else if (appName.includes('Paramount+')) appName = 'Paramount+';
-                else if (appName.includes('YouTube Premium')) appName = 'YouTube Premium';
-                else if (appName.includes('Spotify Premium')) appName = 'Spotify Premium';
-                else if (appName.includes('Deezer Premium')) appName = 'Deezer Premium';
-                else if (appName.includes('Crunchyroll')) appName = 'Crunchyroll';
-                else if (appName.includes('Flujo TV')) appName = 'Flujo TV';
-                else if (appName.includes('Canva Pro')) appName = 'Canva Pro';
-                else if (appName.includes('Vix')) appName = 'Vix';
-                else if (appName.includes('Game Pass Ultimate')) appName = 'Game Pass Ultimate';
-
-
+                let appName = getCleanAppName(appNameElement.textContent.trim());
                 const pricesForApp = appPrices[appName] ? appPrices[appName][userType] : null;
 
                 // Seleccionar el contenedor de los botones de la tarjeta actual
@@ -883,30 +1078,44 @@
                 buttonsContainer.querySelectorAll('.price-display, button.btn-primary').forEach(elem => elem.remove());
 
                 if (pricesForApp) {
-                    // Crear y añadir los elementos de precio para Perfil y Cuenta Completa (solo 1 mes)
-                    if (pricesForApp['Perfil']) {
-                        let perfilPriceElement = document.createElement('p');
-                        perfilPriceElement.classList.add('price-display');
-                        perfilPriceElement.textContent = `Perfil: ${pricesForApp['Perfil']}`;
-                        buttonsContainer.appendChild(perfilPriceElement); // Añadir al final del contenedor
-                        
-                        let perfilButtonElement = document.createElement('button');
-                        perfilButtonElement.classList.add('btn-primary', 'px-4', 'py-2', 'rounded-full', 'font-medium');
-                        perfilButtonElement.textContent = `Obtener Perfil`;
-                        perfilButtonElement.onclick = () => sendWhatsApp(appName, 'Perfil');
-                        buttonsContainer.appendChild(perfilButtonElement);
-                    }
-                    if (pricesForApp['Cuenta Completa']) {
-                        let cuentaPriceElement = document.createElement('p');
-                        cuentaPriceElement.classList.add('price-display');
-                        cuentaPriceElement.textContent = `Cuenta: ${pricesForApp['Cuenta Completa']}`;
-                        buttonsContainer.appendChild(cuentaPriceElement); // Añadir al final del contenedor
+                    // Crear y añadir los elementos de precio y botones
+                    // Para cada tipo de acceso (Perfil, Cuenta Completa, etc.)
+                    for (const accessTypeKey in pricesForApp) {
+                        const price = pricesForApp[accessTypeKey];
+                        let priceElement = document.createElement('p');
+                        priceElement.classList.add('price-display');
+                        let buttonText = '';
+                        let displayAccessType = accessTypeKey; // Texto para mostrar en el botón y precio
 
-                        let cuentaButtonElement = document.createElement('button');
-                        cuentaButtonElement.classList.add('btn-primary', 'px-4', 'py-2', 'rounded-full', 'font-medium');
-                        cuentaButtonElement.textContent = `Obtener Cuenta`;
-                        cuentaButtonElement.onclick = () => sendWhatsApp(appName, 'Cuenta Completa');
-                        buttonsContainer.appendChild(cuentaButtonElement);
+                        // Ajustar el texto de visualización para los tipos de acceso y botones
+                        if (accessTypeKey.startsWith('Cuenta Completa 3 Dispositivos')) {
+                            displayAccessType = 'Cuenta (3 Dispositivos)';
+                            buttonText = `Obtener Cuenta (3 Dispositivos)`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa 5 Dispositivos')) {
+                            displayAccessType = 'Cuenta (5 Dispositivos)';
+                            buttonText = `Obtener Cuenta (5 Dispositivos)`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa Premium con ESPN')) {
+                            displayAccessType = 'Cuenta Premium';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa Estándar con ESPN')) {
+                            displayAccessType = 'Cuenta Estándar';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa')) {
+                            displayAccessType = 'Cuenta';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        } else if (accessTypeKey.startsWith('Perfil')) {
+                            displayAccessType = 'Perfil';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        }
+                        
+                        priceElement.textContent = `${displayAccessType}: ${price}`;
+                        buttonsContainer.appendChild(priceElement);
+                        
+                        let buttonElement = document.createElement('button');
+                        buttonElement.classList.add('btn-primary', 'px-4', 'py-2', 'rounded-full', 'font-medium');
+                        buttonElement.textContent = buttonText;
+                        buttonElement.onclick = () => sendWhatsApp(appName, accessTypeKey);
+                        buttonsContainer.appendChild(buttonElement);
                     }
                 }
                 // Add "Más Información" button last, ensuring it's always there
@@ -931,23 +1140,7 @@
             } else {
                 const userType = document.querySelector('input[name="userType"]:checked').value;
                 let price = '';
-                // Ajustar appName para que coincida con las claves en appPrices
-                let cleanAppName = appName;
-                if (appName.includes('Netflix')) cleanAppName = 'Netflix';
-                else if (appName.includes('Disney+')) cleanAppName = 'Disney+';
-                else if (appName.includes('Max Platino')) cleanAppName = 'Max Platino';
-                else if (appName.includes('Max Estándar')) cleanAppName = 'Max Estándar';
-                else if (appName.includes('Amazon Prime Video')) cleanAppName = 'Amazon Prime Video';
-                else if (appName.includes('Paramount+')) cleanAppName = 'Paramount+';
-                else if (appName.includes('YouTube Premium')) cleanAppName = 'YouTube Premium';
-                else if (appName.includes('Spotify Premium')) cleanAppName = 'Spotify Premium';
-                else if (appName.includes('Deezer Premium')) cleanAppName = 'Deezer Premium';
-                else if (appName.includes('Crunchyroll')) cleanAppName = 'Crunchyroll';
-                else if (appName.includes('Flujo TV')) cleanAppName = 'Flujo TV';
-                else if (appName.includes('Canva Pro')) cleanAppName = 'Canva Pro';
-                else if (appName.includes('Vix')) cleanAppName = 'Vix';
-                else if (appName.includes('Game Pass Ultimate')) cleanAppName = 'Game Pass Ultimate';
-
+                let cleanAppName = getCleanAppName(appName); // Usar la función para limpiar el nombre
 
                 if (appPrices[cleanAppName] && appPrices[cleanAppName][userType] && appPrices[cleanAppName][userType][accessType]) {
                     price = appPrices[cleanAppName][userType][accessType];
@@ -970,6 +1163,16 @@
             }
             updatePrices(); // Actualizar precios al cargar la página
         });
+
+        // Lógica para el menú móvil
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function hideMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
     </script>
 
 </body>
