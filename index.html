@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krypton Plus - Tu Portal Futurista de Streaming y Archivos</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d; /* Fondo muy oscuro */
+            color: #e0ffe0; /* Texto verde claro */
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #0f0, #00ff80, #0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-bg {
+            background-color: #1a1a1a; /* Fondo de tarjeta oscuro */
+            border: 1px solid #00cc66; /* Borde verde brillante */
+            box-shadow: 0 0 15px rgba(0, 255, 128, 0.5); /* Sombra verde brillante */
+        }
+        .btn-primary {
+            background-color: #00cc66; /* Botón verde */
+            color: #0d0d0d; /* Texto oscuro para contraste */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #00e673; /* Verde más claro al pasar el ratón */
+            transform: translateY(-2px);
+        }
+        .input-futuristic {
+            background-color: #1a1a1a;
+            border: 1px solid #00cc66;
+            color: #e0ffe0;
+        }
+        .text-button {
+            color: #00cc66; /* Color verde para el texto */
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem; /* Un poco más pequeño que los botones principales */
+            margin-top: 8px; /* Espacio superior */
+            display: block; /* Para que ocupe su propia línea */
+        }
+        .text-button:hover {
+            color: #00e673; /* Verde más claro al pasar el ratón */
+        }
+        .price-display {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #00ff80; /* Verde brillante */
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        /* Estilos para el modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            border: 1px solid #00cc66;
+            box-shadow: 0 0 20px rgba(0, 255, 128, 0.7);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative; /* Needed for absolute positioning of close button */
+        }
+        .modal-input {
+            background-color: #0d0d0d;
+            border: 1px solid #00cc66;
+            color: #e0ffe0;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .modal-error {
+            color: #ff4d4d; /* Rojo para errores */
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #e0ffe0;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        .modal-close-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        /* Estilo para hacer el encabezado pegajoso */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 999; /* Asegura que esté por encima de otros elementos al desplazarse */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Modal de Contraseña -->
+    <div id="passwordModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" onclick="hidePasswordModal()">×</button>
+            <h3 class="text-2xl font-bold gradient-text mb-4">Acceso Revendedor</h3>
+            <p class="text-gray-300 mb-4">Introduce la clave para acceder a los precios de revendedor:</p>
+            <input type="password" id="revendedorPasswordInput" class="modal-input" placeholder="Clave de Revendedor">
+            <p id="passwordError" class="modal-error hidden">Clave incorrecta. Inténtalo de nuevo.</p>
+            <button class="btn-primary px-6 py-2 rounded-full font-medium w-full" onclick="checkRevendedorPassword()">Confirmar</button>
+        </div>
+    </div>
+
+    <!-- Encabezado -->
+    <header class="bg-gray-900 text-white py-4 shadow-lg sticky-header">
+        <div class="container mx-auto flex items-center justify-between px-4">
+            <!-- Logotipo y Título -->
+            <div class="flex items-center space-x-4">
+                <img src="logos/krypton.png" alt="Logotipo de Krypton Plus" class="h-20 w-20 rounded-full border-2 border-green-500 p-1">
+                <h1 class="text-4xl font-bold gradient-text">Krypton Plus</h1>
+            </div>
+
+            <!-- Botón de Menú para Móviles (Hamburguesa) -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- Navegación Principal (Visible en Desktop, oculta en Mobile) -->
+            <nav id="main-nav" class="hidden md:flex md:flex-row md:space-x-8 text-lg">
+                <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg">
+                    <li><a href="#streaming" class="hover:text-green-400 transition duration-300">Streaming</a></li>
+                    <li><a href="#acceso" class="hover:text-green-400 transition duration-300">Tipos de Acceso</a></li>
+                    <li><a href="#app-details" class="hover:text-green-400 transition duration-300">Detalles de Apps</a></li>
+                    <li><a href="#rules" class="hover:text-green-400 transition duration-300">Reglas de Uso</a></li>
+                    <li><a href="#archivos" class="hover:text-green-400 transition duration-300">Archivos</a></li>
+                    <li><a href="#contacto" class="hover:text-green-400 transition duration-300">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Menú de Navegación Móvil (Se muestra al hacer clic en la hamburguesa) -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-800 py-2">
+            <ul class="flex flex-col space-y-2 text-lg px-4">
+                <li><a href="#streaming" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Streaming</a></li>
+                <li><a href="#acceso" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Tipos de Acceso</a></li>
+                <li><a href="#app-details" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Detalles de Apps</a></li>
+                <li><a href="#rules" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Reglas de Uso</a></li>
+                <li><a href="#archivos" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Archivos</a></li>
+                <li><a href="#contacto" class="block py-2 hover:text-green-400 transition duration-300" onclick="hideMobileMenu()">Contacto</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Sección de Selección de Usuario -->
+    <section class="bg-gray-800 text-white py-4 shadow-md">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+            <p class="text-lg font-semibold">Selecciona tu tipo de usuario:</p>
+            <div class="flex space-x-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" class="form-radio text-green-500 h-5 w-5" name="userType" value="publico" checked onchange="handleUserTypeChange('publico')">
+                    <span class="ml-2 text-white">Público General</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" class="form-radio text-green-500 h-5 w-5" name="userType" value="revendedor" onchange="handleUserTypeChange('revendedor')">
+                    <span class="ml-2 text-white">Revendedor</span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Hero -->
+    <section class="relative h-screen flex items-center justify-center text-center bg-cover bg-center">
+        <div class="absolute inset-0 bg-black opacity-70"></div>
+        <div class="relative z-10 p-8 max-w-4xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-extrabold gradient-text leading-tight mb-6">
+                Acceso Ilimitado al Entretenimiento del Mañana
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8">
+                Descubre un universo de posibilidades con Krypton Plus: tus plataformas de streaming favoritas y archivos esenciales, todo en un solo lugar.
+            </p>
+            <a href="#streaming" class="btn-primary px-8 py-4 rounded-full text-xl font-semibold shadow-lg hover:shadow-green-600">
+                Explorar Ahora
+            </a>
+        </div>
+    </section>
+
+    <!-- Sección de Streaming -->
+    <section id="streaming" class="py-16 bg-gray-950">
+        <div class="container mx-auto px-4">
+            <h3 class="text-4xl font-bold text-center gradient-text mb-12">Plataformas de Streaming</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Tarjeta de Netflix -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/netflix.png" alt="Netflix Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Netflix</h4>
+                    <p class="text-gray-400 mb-4">Miles de películas y series para todos los gustos.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="netflix-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#netflix-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Netflix Privado -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/netflix.png" alt="Netflix Privado Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Netflix Privado</h4>
+                    <p class="text-gray-400 mb-4">Tu perfil exclusivo en una cuenta premium de Netflix.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="netflix-privado-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#netflix-privado-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Disney+ Premium con ESPN -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/disney-plus.png" alt="Disney+ Premium Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Disney+ Premium con ESPN</h4>
+                    <p class="text-gray-400 mb-4">El hogar de Disney, Pixar, Marvel, Star Wars, Nat Geo y ESPN.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="disney-plus-premium-con-espn-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#disney-plus-premium-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Disney+ Estándar con ESPN -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/disney-plus.png" alt="Disney+ Estándar Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Disney+ Estándar con ESPN</h4>
+                    <p class="text-gray-400 mb-4">Acceso a contenido de Disney, Pixar, Marvel, Star Wars, Nat Geo y ESPN.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="disney-plus-estandar-con-espn-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#disney-plus-estandar-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Max Platino -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/max.png" alt="Max Platino Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Max Platino</h4>
+                    <p class="text-gray-400 mb-4">La experiencia premium de Max con la mejor calidad.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="max-platino-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#max-platino-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Max Estándar -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/max.png" alt="Max Estándar Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Max Estándar</h4>
+                    <p class="text-gray-400 mb-4">Acceso completo a Max en calidad estándar.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="max-estandar-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#max-estandar-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Amazon Prime Video -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/amazon-prime-video.png" alt="Amazon Prime Video Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Amazon Prime Video</h4>
+                    <p class="text-gray-400 mb-4">Contenido exclusivo y beneficios Prime.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="amazon-prime-video-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#prime-video-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Paramount+ -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/paramount-plus.png" alt="Paramount+ Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Paramount+</h4>
+                    <p class="text-gray-400 mb-4">Series originales, películas y deportes en vivo.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="paramount-plus-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#paramount-plus-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de YouTube Premium -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/youtube-premium.png" alt="YouTube Premium Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">YouTube Premium</h4>
+                    <p class="text-gray-400 mb-4">Videos sin anuncios, descargas y reproducción en segundo plano.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="youtube-premium-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#youtube-premium-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Spotify Premium -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/spotify.png" alt="Spotify Premium Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Spotify Premium</h4>
+                    <p class="text-gray-400 mb-4">Música sin límites, sin anuncios y descargas.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="spotify-premium-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#spotify-premium-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Deezer Premium -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/deezer.png" alt="Deezer Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Deezer Premium</h4>
+                    <p class="text-gray-400 mb-4">Millones de canciones, podcasts y radios sin anuncios.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="deezer-premium-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#deezer-premium-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Crunchyroll -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/crunchyroll.png" alt="Crunchyroll Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Crunchyroll</h4>
+                    <p class="text-gray-400 mb-4">El mejor anime en streaming, con subtítulos y doblaje.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="crunchyroll-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#crunchyroll-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Flujo TV -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/flujo-tv.png" alt="Flujo TV Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Flujo TV</h4>
+                    <p class="text-gray-400 mb-4">Televisión en vivo y contenido a la carta.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="flujo-tv-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#flujo-tv-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Canva Pro -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/canva-pro.png" alt="Canva Pro Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Canva Pro</h4>
+                    <p class="text-gray-400 mb-4">Herramientas de diseño gráfico premium para todos tus proyectos.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="canva-pro-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#canva-pro-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Vix -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/vix.png" alt="Vix Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Vix</h4>
+                    <p class="text-gray-400 mb-4">Contenido en español, incluyendo series, películas y deportes.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="vix-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#vix-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Game Pass Ultimate -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/game-pass.png" alt="Game Pass Ultimate Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Game Pass Ultimate</h4>
+                    <p class="text-gray-400 mb-4">Acceso a cientos de juegos de alta calidad.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="game-pass-ultimate-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#game-pass-ultimate-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de Super Duolingo -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/duolingo.png" alt="Super Duolingo Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">Super Duolingo</h4>
+                    <p class="text-gray-400 mb-4">La mejor forma de aprender idiomas sin límites.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="super-duolingo-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#super-duolingo-details" class="text-button">Más Información</a>
+                </div>
+                <!-- Tarjeta de MGTV -->
+                <div class="card-bg rounded-xl p-6 text-center transform hover:scale-105 transition duration-300">
+                    <img src="logos/mgtv.png" alt="MGTV Logo" class="mx-auto mb-4 rounded-full">
+                    <h4 class="text-2xl font-semibold text-white mb-2">MGTV</h4>
+                    <p class="text-gray-400 mb-4">Contenido variado para tus dispositivos Android.</p>
+                    <div class="flex flex-col space-y-2 mt-4" id="mgtv-options">
+                        <!-- Los precios y botones se insertarán aquí dinámicamente -->
+                    </div>
+                    <a href="#mgtv-details" class="text-button">Más Información</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tipos de Acceso -->
+    <section id="acceso" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-4xl font-bold gradient-text mb-12">Tipos de Acceso</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Tarjeta de Perfil -->
+                <div class="card-bg rounded-xl p-6 text-left">
+                    <h4 class="text-3xl font-semibold text-white mb-4">Perfil Individual</h4>
+                    <p class="text-gray-400 mb-4">
+                        Un perfil individual te permite acceder a una cuenta compartida de una plataforma de streaming. Disfrutarás de:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Acceso personalizado con tu propio historial y recomendaciones.</li>
+                        <li>Posibilidad de crear tu lista de favoritos.</li>
+                        <li>Ideal para usuarios que buscan una opción económica y personal.</li>
+                        <li>No tienes control sobre la cuenta completa (cambio de contraseña, eliminación de perfiles).</li>
+                    </ul>
+                </div>
+                <!-- Tarjeta de Cuenta Completa -->
+                <div class="card-bg rounded-xl p-6 text-left">
+                    <h4 class="text-3xl font-semibold text-white mb-4">Cuenta Completa</h4>
+                    <p class="text-gray-400 mb-4">
+                        Con una cuenta completa, obtienes el control total de la suscripción a la plataforma. Esto incluye:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Acceso a todos los perfiles disponibles en la cuenta.</li>
+                        <li>Control total sobre la configuración de la cuenta.</li>
+                        <li>Posibilidad de gestionar perfiles, contraseñas y métodos de pago (si aplica).</li>
+                        <li>Perfecto para familias o grupos de amigos que desean compartir y administrar el acceso.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-lg text-gray-500 mt-8">
+                Para más detalles sobre los precios y disponibilidad de cada tipo de acceso, contáctanos.
+            </p>
+        </div>
+    </section>
+
+    <!-- Sección de Detalles de Aplicaciones -->
+    <section id="app-details" class="py-16 bg-gray-950">
+        <div class="container mx-auto px-4">
+            <h3 class="text-4xl font-bold gradient-text mb-12">Detalles de Aplicaciones y Funciones Premium</h3>
+
+            <!-- Detalles de Netflix -->
+            <div id="netflix-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Netflix Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Con Netflix Premium, disfruta de la experiencia de streaming definitiva:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Streaming en Ultra HD (4K) y HDR.</li>
+                    <li>Hasta 4 pantallas simultáneas.</li>
+                    <li>Descargas en hasta 6 dispositivos.</li>
+                    <li>Amplio catálogo de películas, series y documentales originales de Netflix.</li>
+                    <li>Perfiles personalizados con recomendaciones individuales.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Netflix Privado -->
+            <div id="netflix-privado-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Netflix Privado</h4>
+                <p class="text-gray-400 mb-4">
+                    Obtén un perfil exclusivo dentro de una cuenta premium de Netflix. Ideal para quienes buscan privacidad y control sobre su experiencia de visualización sin compartir credenciales de cuenta completa. Olvídate del error fuera del hogar.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Perfil individual y privado.</li>
+                    <li>Historial de visualización y recomendaciones personalizadas.</li>
+                    <li>Acceso al contenido premium de Netflix.</li>
+                    <li>No requiere compartir la contraseña de la cuenta principal.</li>
+                    <li>Planes de perfil disponibles: 1, 2 y 3 meses.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Disney+ Premium con ESPN -->
+            <div id="disney-plus-premium-con-espn-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Disney+ Premium con ESPN</h4>
+                <p class="text-gray-400 mb-4">
+                    La experiencia completa de Disney+ con la adición de ESPN para deportes en vivo y contenido exclusivo.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Contenido de Disney, Pixar, Marvel, Star Wars, National Geographic y ESPN.</li>
+                    <li>Streaming en 4K UHD y HDR (donde esté disponible).</li>
+                    <li>Hasta 4 pantallas simultáneas.</li>
+                    <li>Descargas en hasta 10 dispositivos.</li>
+                    <li>Perfiles personalizables con control parental.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Disney+ Estándar con ESPN -->
+            <div id="disney-plus-estandar-con-espn-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Disney+ Estándar con ESPN</h4>
+                <p class="text-gray-400 mb-4">
+                    Acceso al vasto catálogo de Disney+ y ESPN en calidad estándar.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Contenido de Disney, Pixar, Marvel, Star Wars, National Geographic y ESPN.</li>
+                    <li>Streaming en Full HD (1080p).</li>
+                    <li>Hasta 2 pantallas simultáneas.</li>
+                    <li>Descargas en hasta 10 dispositivos.</li>
+                    <li>Perfiles personalizables con control parental.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Max Platino -->
+            <div id="max-platino-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Max Platino</h4>
+                <p class="text-gray-400 mb-4">
+                    Experimenta el entretenimiento de Max con la máxima calidad y funciones avanzadas:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Streaming en Ultra HD (4K) y HDR.</li>
+                    <li>Hasta 4 pantallas simultáneas.</li>
+                    <li>Descargas en hasta 100 dispositivos.</li>
+                    <li>Audio Dolby Atmos.</li>
+                    <li>Acceso a todo el catálogo de Max (Warner Bros., HBO, DC, Cartoon Network, Max Originals, etc.).</li>
+                    <li>Perfiles de usuario con personalización.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Max Estándar -->
+            <div id="max-estandar-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Max Estándar</h4>
+                <p class="text-gray-400 mb-4">
+                    Disfruta del amplio contenido de Max en calidad estándar:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Streaming en Full HD (1080p).</li>
+                    <li>Hasta 2 pantallas simultáneas.</li>
+                    <li>Descargas en hasta 30 dispositivos.</li>
+                    <li>Audio 5.1.</li>
+                    <li>Acceso a todo el catálogo de Max (Warner Bros., HBO, DC, Cartoon Network, Max Originals, etc.).</li>
+                    <li>Perfiles de usuario con personalización.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Amazon Prime Video -->
+            <div id="prime-video-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Amazon Prime Video S/A</h4>
+                <p class="text-gray-400 mb-4">
+                    Disfruta de contenido exclusivo y beneficios adicionales con Prime Video:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Acceso a una vasta colección de películas y series, incluyendo Amazon Originals.</li>
+                    <li>Streaming en 4K UHD y HDR.</li>
+                    <li>Hasta 3 pantallas simultáneas.</li>
+                    <li>Descargas para ver sin conexión.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Paramount+ -->
+            <div id="paramount-plus-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Paramount+ Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Sumérgete en el universo de Paramount con series, películas y deportes en vivo:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Contenido de CBS, Comedy Central, MTV, Nickelodeon, Showtime y Paramount Pictures.</li>
+                    <li>Streaming en HD y 4K UHD en contenido selecto.</li>
+                    <li>Hasta 3 pantallas simultáneas.</li>
+                    <li>Descargas para ver sin conexión.</li>
+                    <li>Acceso a eventos deportivos en vivo (según la región).</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de YouTube Premium -->
+            <div id="youtube-premium-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">YouTube Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Mejora tu experiencia en YouTube con estas funciones premium:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Videos sin anuncios.</li>
+                    <li>Reproducción en segundo plano (mientras usas otras apps o con la pantalla apagada).</li>
+                    <li>Descargas de videos para ver sin conexión.</li>
+                    <li>Acceso a YouTube Music Premium.</li>
+                    <li>Acceso a YouTube Originals.</li>
+                    <li>Planes disponibles: 1, 2, 3 y 6 meses.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Spotify Premium -->
+            <div id="spotify-premium-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Spotify Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Disfruta de tu música favorita sin interrupciones y con la mejor calidad:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Música sin anuncios.</li>
+                    <li>Descargas ilimitadas para escuchar sin conexión.</li>
+                    <li>Reproducción en cualquier orden y saltos ilimitados.</li>
+                    <li>Calidad de audio mejorada.</li>
+                    <li>Acceso a millones de canciones y podcasts.</li>
+                    <li>Planes disponibles: 1, 2, 3 y 6 meses.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Deezer Premium -->
+            <div id="deezer-premium-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Deezer Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Disfruta de una experiencia musical sin interrupciones y con alta fidelidad:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Acceso a más de 90 millones de canciones sin anuncios.</li>
+                    <li>Calidad de audio HiFi (Lossless FLAC).</li>
+                    <li>Descargas ilimitadas para escuchar sin conexión.</li>
+                    <li>Creación de playlists personalizadas.</li>
+                    <li>Función Flow para descubrir nueva música basada en tus gustos.</li>
+                    <li>Planes disponibles: 1, 2, 3 y 6 meses.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Crunchyroll Mega Fan -->
+            <div id="crunchyroll-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Crunchyroll Mega Fan</h4>
+                <p class="text-gray-400 mb-4">
+                    El hogar definitivo del anime con acceso a:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Acceso ilimitado a todo el catálogo de anime sin anuncios.</li>
+                    <li>Nuevos episodios una hora después de Japón.</li>
+                    <li>Streaming en 1080p.</li>
+                    <li>Acceso a manga digital (en planes selectos).</li>
+                    <li>Disponibilidad en múltiples dispositivos.</li>
+                    <li>Planes disponibles: 1, 2, 3, 6 y 12 meses.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Flujo TV -->
+            <div id="flujo-tv-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Flujo TV Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Accede a una experiencia de televisión completa con Flujo TV:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Canales de televisión en vivo.</li>
+                    <li>Contenido a la carta (VOD).</li>
+                    <li>Funciones de pausa, retroceso y avance rápido en vivo.</li>
+                    <li>Hasta 3 pantallas simultáneas.</li>
+                    <li>Disponible exclusivamente para dispositivos con sistema operativo Android (celulares, tablets y TVs con Android TV).</li>
+                    <li>Planes disponibles: 1, 2, 3 y 6 meses.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Canva Pro -->
+            <div id="canva-pro-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Canva Pro</h4>
+                <p class="text-gray-400 mb-4">
+                    Desbloquea todo el potencial de diseño con Canva Pro:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Acceso ilimitado a millones de fotos, videos, audios y gráficos premium.</li>
+                    <li>Herramientas de edición avanzadas (eliminador de fondos, redimensionamiento mágico).</li>
+                    <li>Creación de kits de marca con logotipos, colores y fuentes.</li>
+                    <li>Guardar diseños con fondo transparente.</li>
+                    <li>Almacenamiento en la nube ilimitado.</li>
+                    <li>Planes disponibles: 1, 2, 3, 6 y 12 meses.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Vix -->
+            <div id="vix-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Vix Premium</h4>
+                <p class="text-gray-400 mb-4">
+                    Vix te ofrece una amplia variedad de contenido en español, incluyendo:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Series y películas originales.</li>
+                    <li>Telenovelas clásicas y nuevas.</li>
+                    <li>Deportes en vivo, incluyendo partidos de fútbol.</li>
+                    <li>Noticias y entretenimiento.</li>
+                    <li>Contenido sin anuncios con la suscripción premium.</li>
+                    <li>Planes disponibles: 1, 2, 3, 6 y 12 meses.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Game Pass Ultimate -->
+            <div id="game-pass-ultimate-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Game Pass Ultimate (Cuenta Secundaria)</h4>
+                <p class="text-gray-400 mb-4">
+                    Accede a un vasto catálogo de juegos de alta calidad con Game Pass Ultimate. Esta es una cuenta secundaria, ideal para:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Jugar cientos de títulos de Xbox Game Studios, Bethesda Softworks y más.</li>
+                    <li>Incluye EA Play.</li>
+                    <li>Juegos en la nube (Cloud Gaming) en dispositivos compatibles.</li>
+                    <li>Acceso a descuentos exclusivos para miembros.</li>
+                    <li>No permite la compra directa de juegos desde la cuenta ni la gestión de la suscripción principal.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de Super Duolingo -->
+            <div id="super-duolingo-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">Super Duolingo</h4>
+                <p class="text-gray-400 mb-4">
+                    Super Duolingo eleva tu aprendizaje de idiomas con estas ventajas:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Aprendizaje sin anuncios.</li>
+                    <li>Vidas ilimitadas para practicar sin interrupciones.</li>
+                    <li>Práctica de errores personalizada.</li>
+                    <li>Pruebas de progreso ilimitadas.</li>
+                    <li>Acceso a lecciones y contenido exclusivo.</li>
+                    <li>Puede ser cuenta nueva o por invitación.</li>
+                </ul>
+            </div>
+
+            <!-- Detalles de MGTV -->
+            <div id="mgtv-details" class="card-bg rounded-xl p-8 mb-8">
+                <h4 class="text-3xl font-semibold text-white mb-4">MGTV</h4>
+                <p class="text-gray-400 mb-4">
+                    MGTV te ofrece una amplia gama de contenido de entretenimiento con acceso en varios dispositivos.
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Contenido variado de películas, series y programas.</li>
+                    <li>TV en vivo.</li>
+                    <li>Pantallas simultáneas: 3 o 5 dispositivos.</li>
+                    <li>Compatible con: celulares y tablets Android, Roku TV y Fire TV.</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Sección de Reglas de Uso de Cuentas y Perfiles -->
+    <section id="rules" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-4xl font-bold gradient-text mb-12">Reglas de Uso de Cuentas y Perfiles</h3>
+            <div class="card-bg rounded-xl p-8 max-w-3xl mx-auto text-left">
+                <p class="text-gray-300 mb-4">
+                    Para garantizar una experiencia óptima y justa para todos nuestros usuarios, es fundamental seguir las siguientes reglas:
+                </p>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li><strong>No borrar perfiles:</strong> Bajo ninguna circunstancia se deben borrar perfiles existentes en las cuentas compartidas. Esto afecta a otros usuarios.</li>
+                    <li><strong>No cambiar contraseñas:</strong> Las contraseñas de las cuentas son gestionadas por AD STREAMING. Cualquier intento de cambio resultará en la suspensión inmediata del servicio.</li>
+                    <li><strong>Respetar el límite de dispositivos:</strong> Utiliza la cuenta solo en el número de dispositivos permitidos para tu tipo de acceso (perfil o cuenta completa). El uso excesivo puede bloquear la cuenta para todos.</li>
+                    <li><strong>No compartir credenciales:</strong> Las credenciales de la cuenta son para tu uso personal o el de tu grupo familiar/amigos, según el tipo de cuenta. No las compartas fuera de este ámbito.</li>
+                    <li><strong>Reportar problemas:</strong> Si encuentras algún problema con la cuenta o el perfil, contáctanos inmediatamente a través de WhatsApp. No intentes solucionarlo por tu cuenta.</li>
+                    <li><strong>Tiempo de resolución de reportes:</strong> Los reportes serán atendidos y resueltos en un lapso de 12 a 48 horas. Agradecemos tu paciencia.</li>
+                    <li><strong>Uso responsable:</strong> Utiliza las cuentas de streaming de manera responsable y ética, respetando los términos de servicio de cada plataforma.</li>
+                </ul>
+                <p class="text-gray-300 mt-4">
+                    El incumplimiento de estas reglas puede llevar a la suspensión o cancelación de tu servicio sin reembolso.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Archivos -->
+    <section id="archivos" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-4xl font-bold gradient-text mb-12">Archivos Exclusivos</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tarjeta de Activación Flujo TV -->
+                <div class="card-bg rounded-xl p-6 flex flex-col items-center">
+                    <div class="text-5xl text-green-400 mb-4">📺</div>
+                    <h4 class="text-2xl font-semibold text-white mb-2">Activación Flujo TV</h4>
+                    <p class="text-gray-400 mb-4">Toda la información para activar tu servicio de Flujo TV.</p>
+                    <a href="https://vanaminhe.com/activacion-fltv/" target="_blank" class="btn-primary px-6 py-2 rounded-full font-medium mt-4">Ver Información</a>
+                </div>
+                <!-- Tarjeta de Instrucciones MGTV -->
+                <div class="card-bg rounded-xl p-6 flex flex-col items-center">
+                    <div class="text-5xl text-green-400 mb-4">📱</div>
+                    <h4 class="text-2xl font-semibold text-white mb-2">Instalación MGTV</h4>
+                    <p class="text-gray-400 mb-4">Guía para instalar MGTV en tus dispositivos.</p>
+                    <div class="text-left w-full mt-4">
+                        <h5 class="text-xl font-semibold text-white mb-2">Descargas MGTV</h5>
+                        <p class="text-gray-300 mb-2">
+                            APK para dispositivos Android (celulares y tablets):
+                            <a href="https://www.mediafire.com/file/5xw876jjt0g86v1/mgtvstreaming+(KRYPTON+PLUS).apk/file" target="_blank" class="text-green-400 hover:underline">Descargar APK</a>
+                        </p>
+                        <p class="text-gray-300 mb-2">
+                            Para Fire TV (con la app Downloader):
+                            Código Downloader: <span class="font-bold text-green-400">4747041</span>
+                        </p>
+                        <p class="text-gray-300">
+                            Para Roku TV:
+                            Ve a la tienda de aplicaciones, busca "MGTV", instala, inicia sesión y disfruta.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-lg text-gray-500 mt-8">
+                (Nota: Los archivos disponibles pueden variar. Se requiere acceso para la descarga.)
+            </p>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="py-16 bg-gray-950">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-4xl font-bold gradient-text mb-12">Contáctanos</h3>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                ¿Tienes preguntas o necesitas soporte? Envíanos un mensaje y nuestro equipo de Krypton Plus te asistirá.
+            </p>
+            <button class="btn-primary px-8 py-3 rounded-full text-lg font-semibold" onclick="sendWhatsApp('General', 'Más Información')">
+                Contactar por WhatsApp
+            </button>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2025 Krypton Plus. Todos los derechos reservados.</p>
+            <p class="mt-2">Diseño con <span class="gradient-text">estética futurista</span> y <span class="gradient-text">energía verde</span>.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Definición de precios para cada aplicación y tipo de usuario
+        const appPrices = {
+            'Netflix': {
+                'publico': {
+                    'Cuenta Completa': '$240 MXN/mes',
+                    'Perfil': '$90 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$60 MXN/mes',
+                    'Cuenta Completa': '$250 MXN/mes'
+                }
+            },
+            'Netflix Privado': {
+                'publico': {
+                    'Perfil': '$120 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$80 MXN/mes'
+                }
+            },
+            'Disney+ Premium con ESPN': {
+                'publico': {
+                    'Cuenta Completa': '$160 MXN/mes',
+                    'Perfil': '$50 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$110 MXN/mes',
+                    'Perfil': '$20 MXN/mes'
+                }
+            },
+            'Disney+ Estándar con ESPN': {
+                'publico': {
+                    'Cuenta Completa': '$70 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$50 MXN/mes'
+                }
+            },
+            'Max Platino': {
+                'publico': {
+                    'Cuenta Completa': '$120 MXN/mes',
+                    'Perfil': '$50 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$25 MXN/mes',
+                    'Cuenta Completa': '$85 MXN/mes'
+                }
+            },
+            'Max Estándar': {
+                'publico': {
+                    'Cuenta Completa': '$60 MXN/mes',
+                    'Perfil': '$35 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$15 MXN/mes',
+                    'Cuenta Completa': '$35 MXN/mes'
+                }
+            },
+            'Amazon Prime Video': {
+                'publico': {
+                    'Cuenta Completa': '$75 MXN/mes',
+                    'Perfil': '$35 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$70 MXN/mes',
+                    'Cuenta Completa': '$200 MXN/mes'
+                }
+            },
+            'Paramount+': {
+                'publico': {
+                    'Cuenta Completa': '$60 MXN/mes',
+                    'Perfil': '$35 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$15 MXN/mes',
+                    'Cuenta Completa': '$35 MXN/mes'
+                }
+            },
+            'YouTube Premium': {
+                'publico': {
+                    'Cuenta Completa': '$80 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$140 MXN/mes'
+                }
+            },
+            'Spotify Premium': {
+                'publico': {
+                    'Cuenta Completa': '$70 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$40 MXN/mes'
+                }
+            },
+            'Deezer Premium': {
+                'publico': {
+                    'Cuenta Completa': '$50 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$15 MXN/mes'
+                }
+            },
+            'Crunchyroll': {
+                'publico': {
+                    'Cuenta Completa': '$60 MXN/mes',
+                    'Perfil': '$30 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$10 MXN/mes',
+                    'Cuenta Completa': '$35 MXN/mes'
+                }
+            },
+            'Flujo TV': {
+                'publico': {
+                    'Cuenta Completa': '$90 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$65 MXN/mes'
+                }
+            },
+            'Canva Pro': {
+                'publico': {
+                    'Cuenta Completa': '$50 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$30 MXN/mes'
+                }
+            },
+            'Vix': {
+                'publico': {
+                    'Cuenta Completa': '$40 MXN/mes',
+                    'Perfil': '$20 MXN/mes'
+                },
+                'revendedor': {
+                    'Perfil': '$5 MXN/mes',
+                    'Cuenta Completa': '$15 MXN/mes'
+                }
+            },
+            'Game Pass Ultimate': {
+                'publico': {
+                    'Cuenta Completa': '$120 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$200 MXN/mes'
+                }
+            },
+            'Super Duolingo': {
+                'publico': {
+                    'Cuenta Completa': '$50 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa': '$25 MXN/mes'
+                }
+            },
+            'MGTV': {
+                'publico': {
+                    'Cuenta Completa 3 Dispositivos': '$90 MXN/mes',
+                    'Cuenta Completa 5 Dispositivos': '$120 MXN/mes'
+                },
+                'revendedor': {
+                    'Cuenta Completa 3 Dispositivos': '$75 MXN/mes',
+                    'Cuenta Completa 5 Dispositivos': '$90 MXN/mes'
+                }
+            }
+        };
+
+        // Función para mostrar el modal de contraseña
+        function showPasswordModal() {
+            document.getElementById('passwordModal').classList.remove('hidden');
+            document.getElementById('revendedorPasswordInput').value = ''; // Limpiar input
+            document.getElementById('passwordError').classList.add('hidden'); // Ocultar error
+            document.getElementById('revendedorPasswordInput').focus(); // Enfocar input
+        }
+
+        // Función para ocultar el modal de contraseña
+        function hidePasswordModal() {
+            document.getElementById('passwordModal').classList.add('hidden');
+            // Asegurarse de que el radio button de "Público General" esté seleccionado si el modal se cierra sin éxito
+            const publicoRadio = document.querySelector('input[name="userType"][value="publico"]');
+            const revendedorRadio = document.querySelector('input[name="userType"][value="revendedor"]');
+            if (localStorage.getItem('kryptonUserType') !== 'revendedor') { // Si no se ha autenticado como revendedor
+                publicoRadio.checked = true;
+                updatePrices();
+            }
+        }
+
+        // Función para verificar la contraseña del revendedor
+        function checkRevendedorPassword() {
+            const passwordInput = document.getElementById('revendedorPasswordInput').value;
+            const publicoRadio = document.querySelector('input[name="userType"][value="publico"]');
+            const revendedorRadio = document.querySelector('input[name="userType"][value="revendedor"]');
+            const passwordError = document.getElementById('passwordError');
+
+            if (passwordInput === "Krypton+") {
+                localStorage.setItem('kryptonUserType', 'revendedor');
+                revendedorRadio.checked = true;
+                updatePrices();
+                hidePasswordModal();
+            } else {
+                passwordError.classList.remove('hidden'); // Mostrar mensaje de error
+                document.getElementById('revendedorPasswordInput').value = ''; // Limpiar input
+                document.getElementById('revendedorPasswordInput').focus(); // Re-enfocar input
+            }
+        }
+
+        // Función para manejar el cambio de tipo de usuario
+        function handleUserTypeChange(selectedType) {
+            const publicoRadio = document.querySelector('input[name="userType"][value="publico"]');
+            const revendedorRadio = document.querySelector('input[name="userType"][value="revendedor"]');
+
+            if (selectedType === 'revendedor') {
+                // Si el usuario ya está como revendedor (y la clave ya fue verificada), no pedirla de nuevo
+                if (localStorage.getItem('kryptonUserType') === 'revendedor') {
+                    updatePrices();
+                } else {
+                    showPasswordModal();
+                }
+            } else {
+                localStorage.setItem('kryptonUserType', 'publico');
+                updatePrices();
+                hidePasswordModal(); // Asegurarse de que el modal esté oculto si se vuelve a público
+            }
+        }
+
+        // Función para obtener el nombre de la aplicación limpio para usar como clave
+        function getCleanAppName(rawAppName) {
+            if (rawAppName.includes('Netflix Privado')) return 'Netflix Privado';
+            if (rawAppName.includes('Netflix')) return 'Netflix';
+            if (rawAppName.includes('Disney+ Premium con ESPN')) return 'Disney+ Premium con ESPN';
+            if (rawAppName.includes('Disney+ Estándar con ESPN')) return 'Disney+ Estándar con ESPN';
+            if (rawAppName.includes('Max Platino')) return 'Max Platino';
+            if (rawAppName.includes('Max Estándar')) return 'Max Estándar';
+            if (rawAppName.includes('Amazon Prime Video')) return 'Amazon Prime Video';
+            if (rawAppName.includes('Paramount+')) return 'Paramount+';
+            if (rawAppName.includes('YouTube Premium')) return 'YouTube Premium';
+            if (rawAppName.includes('Spotify Premium')) return 'Spotify Premium';
+            if (rawAppName.includes('Deezer Premium')) return 'Deezer Premium';
+            if (rawAppName.includes('Crunchyroll')) return 'Crunchyroll';
+            if (rawAppName.includes('Flujo TV')) return 'Flujo TV';
+            if (rawAppName.includes('Canva Pro')) return 'Canva Pro';
+            if (rawAppName.includes('Vix')) return 'Vix';
+            if (rawAppName.includes('Game Pass Ultimate')) return 'Game Pass Ultimate';
+            if (rawAppName.includes('Super Duolingo')) return 'Super Duolingo';
+            if (rawAppName.includes('MGTV')) return 'MGTV';
+            return rawAppName; // Fallback
+        }
+
+        // Función para actualizar los precios mostrados en las tarjetas
+        function updatePrices() {
+            const userType = document.querySelector('input[name="userType"]:checked').value;
+            
+            // Obtener todas las tarjetas de streaming
+            const streamingCards = document.querySelectorAll('#streaming .card-bg');
+
+            streamingCards.forEach(card => {
+                const appNameElement = card.querySelector('h4');
+                if (!appNameElement) return; // Si no hay h4, saltar esta tarjeta
+
+                let appName = getCleanAppName(appNameElement.textContent.trim());
+                const pricesForApp = appPrices[appName] ? appPrices[appName][userType] : null;
+
+                // Seleccionar el contenedor de los botones de la tarjeta actual
+                const buttonsContainer = card.querySelector('.flex.flex-col.space-y-2');
+                if (!buttonsContainer) return;
+
+                // Eliminar todos los precios y botones existentes para evitar duplicados
+                buttonsContainer.querySelectorAll('.price-display, button.btn-primary').forEach(elem => elem.remove());
+
+                if (pricesForApp) {
+                    // Crear y añadir los elementos de precio y botones
+                    // Para cada tipo de acceso (Perfil, Cuenta Completa, etc.)
+                    for (const accessTypeKey in pricesForApp) {
+                        const price = pricesForApp[accessTypeKey];
+                        let priceElement = document.createElement('p');
+                        priceElement.classList.add('price-display');
+                        let buttonText = '';
+                        let displayAccessType = accessTypeKey; // Texto para mostrar en el botón y precio
+
+                        // Ajustar el texto de visualización para los tipos de acceso y botones
+                        if (accessTypeKey.startsWith('Cuenta Completa 3 Dispositivos')) {
+                            displayAccessType = 'Cuenta (3 Dispositivos)';
+                            buttonText = `Obtener Cuenta (3 Dispositivos)`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa 5 Dispositivos')) {
+                            displayAccessType = 'Cuenta (5 Dispositivos)';
+                            buttonText = `Obtener Cuenta (5 Dispositivos)`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa Premium con ESPN')) {
+                            displayAccessType = 'Cuenta Premium';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa Estándar con ESPN')) {
+                            displayAccessType = 'Cuenta Estándar';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        } else if (accessTypeKey.startsWith('Cuenta Completa')) {
+                            displayAccessType = 'Cuenta';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        } else if (accessTypeKey.startsWith('Perfil')) {
+                            displayAccessType = 'Perfil';
+                            buttonText = `Obtener ${displayAccessType}`;
+                        }
+                        
+                        priceElement.textContent = `${displayAccessType}: ${price}`;
+                        buttonsContainer.appendChild(priceElement);
+                        
+                        let buttonElement = document.createElement('button');
+                        buttonElement.classList.add('btn-primary', 'px-4', 'py-2', 'rounded-full', 'font-medium');
+                        buttonElement.textContent = buttonText;
+                        buttonElement.onclick = () => sendWhatsApp(appName, accessTypeKey);
+                        buttonsContainer.appendChild(buttonElement);
+                    }
+                }
+                // Add "Más Información" button last, ensuring it's always there
+                let moreInfoButton = card.querySelector('.text-button');
+                if (!moreInfoButton) {
+                    moreInfoButton = document.createElement('a');
+                    moreInfoButton.classList.add('text-button');
+                    buttonsContainer.appendChild(moreInfoButton);
+                }
+                moreInfoButton.href = `#${appName.toLowerCase().replace(/\s+/g, '-')}-details`;
+                moreInfoButton.textContent = 'Más Información';
+            });
+        }
+
+        // Función para enviar mensaje de WhatsApp con tipo de acceso y precio
+        function sendWhatsApp(appName, accessType) {
+            const phoneNumber = '525660889030'; // Número de WhatsApp sin el '+'
+            let message = '';
+
+            if (appName === 'General' && accessType === 'Más Información') {
+                message = `¡Hola! Necesito más información sobre los servicios de Krypton Plus.`;
+            } else {
+                const userType = document.querySelector('input[name="userType"]:checked').value;
+                let price = '';
+                let cleanAppName = getCleanAppName(appName); // Usar la función para limpiar el nombre
+
+                if (appPrices[cleanAppName] && appPrices[cleanAppName][userType] && appPrices[cleanAppName][userType][accessType]) {
+                    price = appPrices[cleanAppName][userType][accessType];
+                }
+                message = `¡Hola! Me interesa obtener acceso a ${appName} como ${accessType} (${price}) a través de Krypton Plus. ¿Podrían darme más información?`;
+            }
+
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Cargar la preferencia del usuario al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUserType = localStorage.getItem('kryptonUserType');
+            if (savedUserType) {
+                const radio = document.querySelector(`input[name="userType"][value="${savedUserType}"]`);
+                if (radio) {
+                    radio.checked = true;
+                }
+            }
+            updatePrices(); // Actualizar precios al cargar la página
+        });
+
+        // Lógica para el menú móvil
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function hideMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+    </script>
+
+</body>
+</html>
